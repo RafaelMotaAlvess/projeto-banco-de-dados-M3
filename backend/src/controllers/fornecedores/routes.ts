@@ -15,4 +15,5 @@ export async function fornecedoresRoutes(app: FastifyInstance) {
   app.get('/fornecedores/contato/:id', fetchContato)
   app.get('/fornecedores/enderecos', fetchAllEnderecos)
   app.get('/fornecedores/endereco/:id', fetchEndereco)
+  app.put('/fornecedores/:id', update)
 }
