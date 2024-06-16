@@ -3,9 +3,9 @@ import { create } from "./create-controller";
 import { fetchAll } from "./fetchall-controller";
 import { fetch } from "./fetch-controller";
 
-export async function clientesRoutes(app: FastifyInstance) {
-  app.get('/clientes', fetchAll)
-  app.post('/clientes', create)
+export async function categoriasRoutes(app: FastifyInstance) {
+  app.get('/categorias', fetchAll)
+  app.post('/categorias', create)
 
-  app.get('/clientes/:id', fetch)
+  app.get('/categorias/:id', fetch)
 }

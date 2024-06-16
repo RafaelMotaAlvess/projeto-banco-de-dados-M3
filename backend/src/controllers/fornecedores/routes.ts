@@ -6,6 +6,7 @@ import { fetchAllContatos } from "./fetchall-contatos-controller";
 import { fetchContato } from "./fetch-contato-controller";
 import { fetchAllEnderecos } from "./fetchall-enderecos-controller";
 import { fetchEndereco } from "./fetch-endereco-controller";
+import { update } from "../clientes/update-controller";
 
 export async function fornecedoresRoutes(app: FastifyInstance) {
   app.post('/fornecedores', create)
