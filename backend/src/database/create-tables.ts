@@ -22,10 +22,10 @@ export async function createTables() {
       id INT PRIMARY KEY AUTO_INCREMENT,
       bairro VARCHAR(50),
       rua VARCHAR(50),
-      cep INT,
+      cep VARCHAR(8),
       cidade VARCHAR(50),
       estado VARCHAR(50),
-      numero INT,
+      numero VARCHAR(6),
       id_fornecedor INT,
       FOREIGN KEY (id_fornecedor) REFERENCES Fornecedor (id)
   )
@@ -108,7 +108,6 @@ export async function createTables() {
       descricao VARCHAR(255),
       data_atualizacao DATE,
       observacoes VARCHAR(100),
-      total_pedido FLOAT(12),
       id_pedido int,
       FOREIGN KEY (id_pedido) REFERENCES Pedido (id) 
   );
