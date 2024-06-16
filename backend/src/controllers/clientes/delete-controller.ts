@@ -2,10 +2,10 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { database } from "../../database";
 import { findById } from "./helpers";
 
-type FetchRequest = FastifyRequest<{ Params: { id: string } }>
+type ParamsRequest = FastifyRequest<{ Params: { id: string } }>
 
 export async function remove(request: FastifyRequest, reply: FastifyReply) {
-  const { id } = request.params as FetchRequest
+  const { id } = request.params as ParamsRequest
 
   try {
     const cliente = await findById(id)
