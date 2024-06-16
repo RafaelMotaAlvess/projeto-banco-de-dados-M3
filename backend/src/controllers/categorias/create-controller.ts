@@ -10,8 +10,8 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
   const { nome } = createBodySchema.parse(request.body)
 
   try {
-    const cliente = await database.promise().query(
-      `INSERT INTO Categoia (nome) VALUES (?)`,
+    await database.promise().query(
+      `INSERT INTO Categoria (nome) VALUES (?)`,
       [nome]
     )
 
