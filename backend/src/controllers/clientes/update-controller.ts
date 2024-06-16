@@ -15,7 +15,6 @@ export async function update(request: FastifyRequest, reply: FastifyReply) {
   })
 
   let cliente = createBodySchema.parse(request.body) as Cliente
-  console.log(cliente)
 
   try {
     const clienteExist = await findById(id)

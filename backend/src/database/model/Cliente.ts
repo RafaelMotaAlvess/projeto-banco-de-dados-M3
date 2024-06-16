@@ -7,7 +7,7 @@ export type Cliente = {
   email: string,
   senha: string,
   contato: ContatoCliente[],
-  endereco: EnderecoCliente[],
+  endereco: EnderecoCliente,
   data_criacao?: Date,
   data_atualizacao?: Date
 }
