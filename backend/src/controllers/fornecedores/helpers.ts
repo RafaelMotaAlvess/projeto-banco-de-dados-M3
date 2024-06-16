@@ -29,3 +29,12 @@ export async function findContatoById(id: string): Promise<ContatoFornecedor | n
 
   return contato ?? null
 }
+
+export async function nameExists(name: string): Promise<Fornecedor | null> {
+  const findFornecedor = await database.promise().query(
+    `SELECT * FROM Fornecedores WHERE nome = ? LIMIT 1`, [name]
+  )
+
+  const fornecedor = findFornecedor[0][0] as Fornecedor
+  return fornecedor ?? null
+}

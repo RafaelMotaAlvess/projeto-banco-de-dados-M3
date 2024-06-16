@@ -13,7 +13,18 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     cep: z.string(),
     cidade: z.string(),
     estado: z.string(),
-    numero: z.string()
+    numero: z.string(),
+    contatos: z.array(z.object({
+      info: z.string(),
+      tipo: z.string()
+    })),
+    endereco: z.object({
+      bairro: z.string(),
+      rua: z.string(),
+      cep: z.string(),
+      cidade: z.string(),
+      numero: z.string(),
+    })
   })
 
   const {
@@ -25,7 +36,9 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     cep,
     cidade,
     estado,
-    numero
+    numero,
+    contatos,
+    endereco
   } = createBodySchema.parse(request.body)
 
   try {
@@ -34,14 +47,16 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
       [nome]
     )[0] as Fornecedor
 
+    contatos.forEach(async (contato) => {
+      await database.promise().query(
+        `INSERT INTO ContatoFornecedor (id_fornecedor, info, tipo) VALUES (?, ?, ?)`,
+        [fornecedor.id, contato.info, contato.tipo]
+      )
+    })
+
     await database.promise().query(
       `INSERT INTO EnderecoFornecedor (id_fornecedor, bairro, rua, cep, cidade, estado, numero) VALUES (?, ?, ?, ?, ?, ?, ?)`,
       [fornecedor.id, bairro, rua, cep, cidade, estado, numero]
-    )
-
-    await database.promise().query(
-      `INSERT INTO ContatoFornecedor (id_fornecedor, info, tipo) VALUES (?, ?, ?)`,
-      [fornecedor.id, info, tipo]
     )
 
   } catch (error) {
