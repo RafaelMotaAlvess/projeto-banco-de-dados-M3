@@ -1,0 +1,35 @@
+# Lista todos os pedidos
+GET http://localhost:3000/pedidos HTTP/1.1
+
+###
+
+# Lista todos os detalhes de todos pedidos
+GET http://localhost:3000/pedidos/5 HTTP/1.1
+
+###
+
+# Lista todos os status de todos pedidos
+GET http://localhost:3000/pedidos/status HTTP/1.1
+
+###
+
+# Cadastra um pedido novo, com detalhes e status
+POST http://localhost:3000/pedido HTTP/1.1
+Content-Type: application/json
+
+{
+    "id_cliente": 1,
+    "metodo_compra":"boleto",
+    "detalhes":[
+        {
+            "id_produto":1,
+            "quantidade_produto": 3
+        },
+        {
+            "id_produto":2,
+            "quantidade_produto":3
+        }
+    ],
+    "descricao":"pendente",
+    "observacoes":"pobre"
+}

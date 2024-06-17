@@ -1,0 +1,62 @@
+# Lista todos os produtos
+GET http://localhost:3000/produtos HTTP/1.1
+
+###
+
+# Cadastra um novo Produto com informações detalhadas
+POST http://localhost:3000/produtos HTTP/1.1
+Content-Type: application/json
+
+{
+    "id_categoria": 1,
+    "id_fornecedor": 1,
+    "nome": "oculus SS",
+    "descricao": "oculus vr super avancado",
+    "preco": 10,
+    "quantidade_estoque":1
+}
+
+### 
+
+# Obtém detalhes de um produto específico pelo ID
+GET http://localhost:3000/produtos/1 HTTP/1.1
+
+###
+
+# Cadastra um novo Produto com informações detalhadas
+POST http://localhost:3000/produtos HTTP/1.1
+Content-Type: application/json
+
+{
+    "id_categoria": 1,
+    "id_fornecedor": 1,
+    "nome": "maquina de lavar gamer",
+    "descricao": "",
+    "preco": 100,
+    "quantidade_estoque":7
+}
+
+###
+
+# Obtém detalhes de um produto específico pelo ID
+GET http://localhost:3000/produtos/1 HTTP/1.1
+
+###
+
+# Atualiza informações de um produto específico pelo ID
+PUT http://localhost:3000/produtos/1 HTTP/1.1
+Content-Type: application/json
+
+{
+    "id_categoria": 1,
+    "id_fornecedor": 1,
+    "nome": "oculus vr positivo",
+    "descricao": "oculus vr super avancado",
+    "preco": 10000,
+    "quantidade_estoque":0
+}
+
+###
+
+# Deleta um produto específico pelo ID
+DELETE http://localhost:3000/produtos/2 HTTP/1.1
