@@ -1,6 +1,3 @@
 # projeto-banco-de-dados-M3
 
-
-1. Rodar o servidor XAMPP MySQL
-2. Rodar a query CREATE SCHEMA `projetodbm3`;
-
+PROJETO DESENVOLVIDO POR Rafael Mota Alves e Thiago Trainotti
