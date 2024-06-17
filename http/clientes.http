@@ -19,7 +19,7 @@ Content-Type: application/json
 
 {
     "nome": "Rafael Mota Noti",
-    "email": "rafaelnoti@gmail.com",
+    "email": "rafaelnotis@gmail.com",
     "senha": "rafaelnoti123",
     "contatos": [
         {
@@ -94,4 +94,4 @@ Content-Type: application/json
 ###
 
 # Deleta um cliente específico pelo ID
-DELETE http://localhost:3000/clientes/1 HTTP/1.1
+DELETE http://localhost:3000/clientes/2 HTTP/1.1

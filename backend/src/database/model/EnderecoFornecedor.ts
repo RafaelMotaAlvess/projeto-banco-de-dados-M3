@@ -6,5 +6,6 @@ export type EnderecoFornecedor = {
   rua: string,
   cep: string,
   cidade: string,
+  estado: string,
   number: string
 }
