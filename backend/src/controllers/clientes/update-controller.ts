@@ -36,8 +36,6 @@ export async function update(request: FastifyRequest, reply: FastifyReply) {
 
     cliente.data_atualizacao = new Date()
 
-    console.log(cliente)
-
     await database.promise().query(
       `UPDATE Cliente SET ? WHERE id = ?`, [cliente, id]
     )
