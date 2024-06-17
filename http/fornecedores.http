@@ -1,0 +1,66 @@
+# Lista todos os fornecedores
+GET http://localhost:3000/fornecedores HTTP/1.1
+
+###
+
+# Lista todos os endereços dos fornecedores
+GET http://localhost:3000/fornecedores/enderecos HTTP/1.1
+
+###
+
+# Lista todos os contatos dos fornecedores
+GET http://localhost:3000/fornecedores/contatos HTTP/1.1
+
+###
+
+# Cadastra um novo fornecedor com informações detalhadas, incluindo contatos e endereço
+POST http://localhost:3000/fornecedores HTTP/1.1
+Content-Type: application/json
+
+{
+    "nome": "Thiguel Malves",
+    "contatos": [
+        {
+            "info": "47992322389",
+            "tipo": "Celular"
+        }
+    ],
+    "endereco": {
+        "rua": "Rua 4",
+        "numero": "234",
+        "bairro": "Centro",
+        "cidade": "Balneario Camboriu",
+        "estado": "SC",
+        "cep": "89060240"
+    }
+}
+
+###
+
+# Obtém detalhes de um fornecedor específico pelo ID
+GET http://localhost:3000/fornecedores/2 HTTP/1.1
+
+###
+
+# Lista os contatos de um fornecedor específico pelo ID
+GET http://localhost:3000/fornecedores/contato/1 HTTP/1.1
+
+###
+
+# Lista o endereço de um fornecedor específico pelo ID
+GET http://localhost:3000/fornecedores/endereco/1 HTTP/1.1
+
+###
+
+# Atualiza informações de um fornecedor específico pelo ID
+PUT http://localhost:3000/fornecedores/1 HTTP/1.1
+Content-Type: application/json
+
+{
+    "nome": "Lucas Gameplays"
+}
+
+###
+
+# Deleta um fornecedor específico pelo ID
+DELETE http://localhost:3000/fornecedores/1 HTTP/1.1

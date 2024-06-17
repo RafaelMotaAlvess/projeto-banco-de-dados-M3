@@ -6,7 +6,8 @@ import { fetchAllContatos } from "./fetchall-contatos-controller";
 import { fetchContato } from "./fetch-contato-controller";
 import { fetchAllEnderecos } from "./fetchall-enderecos-controller";
 import { fetchEndereco } from "./fetch-endereco-controller";
-import { update } from "../clientes/update-controller";
+import { update } from "./update-controller";
+import { remove } from "./delete-controller";
 
 export async function fornecedoresRoutes(app: FastifyInstance) {
   app.post('/fornecedores', create)
@@ -17,4 +18,5 @@ export async function fornecedoresRoutes(app: FastifyInstance) {
   app.get('/fornecedores/enderecos', fetchAllEnderecos)
   app.get('/fornecedores/endereco/:id', fetchEndereco)
   app.put('/fornecedores/:id', update)
+  app.delete('/fornecedores/:id', remove)
 }

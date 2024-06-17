@@ -1,19 +1,11 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from 'zod';
 import { database } from "../../database/db";
-import { Fornecedor } from "../../database";
+import { ResultSetHeader } from "mysql2";
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
   const createBodySchema = z.object({
     nome: z.string(),
-    info: z.string(),
-    tipo: z.string(),
-    bairro: z.string(),
-    rua: z.string(),
-    cep: z.string(),
-    cidade: z.string(),
-    estado: z.string(),
-    numero: z.string(),
     contatos: z.array(z.object({
       info: z.string(),
       tipo: z.string()
@@ -23,40 +15,38 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
       rua: z.string(),
       cep: z.string(),
       cidade: z.string(),
+      estado: z.string(),
       numero: z.string(),
     })
   })
 
-  const {
-    nome,
-    info,
-    tipo,
-    bairro,
-    rua,
-    cep,
-    cidade,
-    estado,
-    numero,
-    contatos,
-    endereco
-  } = createBodySchema.parse(request.body)
 
   try {
-    const fornecedor = await database.promise().query(
+    const {
+      nome,
+      contatos,
+      endereco
+    } = createBodySchema.parse(request.body)
+
+    const parsed = createBodySchema.parse(request.body)
+
+    console.log(parsed)
+
+    const [fornecedor] = await database.promise().query(
       `INSERT INTO Fornecedor (nome) VALUES (?)`,
       [nome]
-    )[0] as Fornecedor
+    ) as ResultSetHeader[]
 
     contatos.forEach(async (contato) => {
       await database.promise().query(
         `INSERT INTO ContatoFornecedor (id_fornecedor, info, tipo) VALUES (?, ?, ?)`,
-        [fornecedor.id, contato.info, contato.tipo]
+        [fornecedor.insertId, contato.info, contato.tipo]
       )
     })
 
     await database.promise().query(
       `INSERT INTO EnderecoFornecedor (id_fornecedor, bairro, rua, cep, cidade, estado, numero) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [fornecedor.id, bairro, rua, cep, cidade, estado, numero]
+      [fornecedor.insertId, endereco.bairro, endereco.rua, endereco.cep, endereco.cidade, endereco.estado, endereco.numero]
     )
 
   } catch (error) {

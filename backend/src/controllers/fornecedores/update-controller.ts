@@ -12,25 +12,16 @@ export async function update(request: FastifyRequest, reply: FastifyReply) {
     nome: z.string(),
   })
 
-  let fornecedor = createBodySchema.parse(request.body) as Fornecedor
-  console.log(fornecedor)
 
   try {
+    let fornecedor = createBodySchema.parse(request.body) as Fornecedor
     const fornecedorExist = await findById(id)
 
     if (!fornecedorExist) {
       return reply.status(404).send({ message: "Fornecedor não encontrado" })
     }
 
-    const fornecedorWithSameName = await nameExists(fornecedor.nome)
-
-    if (fornecedorWithSameName) {
-      return reply.status(409).send({ message: "Fornecedor já cadastrado" })
-    }
-
     fornecedor = { ...fornecedorExist, ...fornecedor }
-
-    console.log(fornecedor)
 
     await database.promise().query(
       `UPDATE Fornecedor SET ? WHERE id = ?`, [fornecedor, id]

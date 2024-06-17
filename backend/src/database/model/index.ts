@@ -1,4 +1,6 @@
 export * from './Cliente'
+export * from './EnderecoCliente'
+export * from './ContatoCliente'
 export * from './Fornecedor'
 export * from './EnderecoFornecedor'
 export * from './ContatoFornecedor'
