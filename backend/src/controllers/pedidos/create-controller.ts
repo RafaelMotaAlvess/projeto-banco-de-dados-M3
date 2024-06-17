@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from 'zod';
 import { database } from "../../database/db";
 import { ResultSetHeader } from "mysql2";
-import { findById } from "./helpers";
+import { findById, findProduct } from "./helpers";
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
   const createBodySchema = z.object({
@@ -27,7 +27,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
   try {
     const subtotal = detalhes.map(
       async (item) => {
-        const produto = await findById(item.id_produto.toString())
+        const produto = await findProduct(item.id_produto.toString())
 
         if (!produto) {
           throw new Error('Produto não encontrado')
@@ -50,7 +50,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     console.log('checkpoint 0.2')
 
     detalhes.forEach(async (item) => {
-      const produto = await findById(item.id_produto.toString())
+      const produto = await findProduct(item.id_produto.toString())
 
       if (!produto) {
         throw new Error('Produto não encontrado')

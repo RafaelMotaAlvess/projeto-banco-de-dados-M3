@@ -38,7 +38,7 @@ Content-Type: application/json
 ###
 
 # Obtém detalhes de um fornecedor específico pelo ID
-GET http://localhost:3000/fornecedores/2 HTTP/1.1
+GET http://localhost:3000/fornecedores/1 HTTP/1.1
 
 ###
 

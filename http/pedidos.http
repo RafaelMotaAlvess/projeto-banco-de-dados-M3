@@ -4,12 +4,23 @@ GET http://localhost:3000/pedidos HTTP/1.1
 ###
 
 # Lista todos os detalhes de todos pedidos
-GET http://localhost:3000/pedidos/5 HTTP/1.1
+GET http://localhost:3000/pedido/1 HTTP/1.1
 
 ###
 
 # Lista todos os status de todos pedidos
-GET http://localhost:3000/pedidos/status HTTP/1.1
+GET http://localhost:3000/pedido/status/1 HTTP/1.1
+
+###
+
+
+# Lista todos os status de todos pedidos
+PUT http://localhost:3000/pedido/status/1 HTTP/1.1
+Content-Type: application/json
+
+{
+    "descricao":"finalizado"
+}
 
 ###
 
@@ -26,10 +37,14 @@ Content-Type: application/json
             "quantidade_produto": 3
         },
         {
-            "id_produto":2,
+            "id_produto":1,
             "quantidade_produto":3
         }
     ],
     "descricao":"pendente",
     "observacoes":"pobre"
 }
+
+###
+
+DELETE http://localhost:3000/pedido/1 HTTP/1.1
