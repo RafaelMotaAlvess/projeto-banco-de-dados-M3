@@ -1,17 +1,16 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from 'zod';
 import { database } from "../../database/db";
-import { Pedido } from "../../database";
+import { ResultSetHeader } from "mysql2";
+import { findById } from "./helpers";
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
   const createBodySchema = z.object({
     id_cliente: z.number(),
-    data: z.date(),
     metodo_compra: z.string().min(1),
     detalhes: z.array(z.object({
       id_produto: z.number(),
       quantidade_produto: z.number(),
-      preco_unitario: z.number(),
     })),
     descricao: z.string(),
     observacoes: z.string()
@@ -19,7 +18,6 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 
   const {
     id_cliente,
-    data,
     metodo_compra,
     detalhes,
     descricao,
@@ -28,50 +26,80 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 
   try {
     const subtotal = detalhes.map(
-      item => item.quantidade_produto * item.preco_unitario
+      async (item) => {
+        const produto = await findById(item.id_produto.toString())
+
+        if (!produto) {
+          throw new Error('Produto não encontrado')
+        }
+
+        return item.quantidade_produto * produto.preco
+      }
     )
 
-    const total_pedido = subtotal.reduce((acc, curr) => acc + curr)
+    const total_pedido = await subtotal.reduce(async (acc, curr) => await acc + await curr)
+    const data = new Date()
 
-    const pedido = await database.promise().query(
-      `INSERT INTO PEDIDO (id_cliente, data, metodo_compra, total_pedido) VALUES
-      (?, ?, ?, ?)`,
+    console.log(id_cliente, data, metodo_compra, total_pedido)
+
+    const [pedido] = await database.promise().query(
+      `INSERT INTO Pedido (id_cliente, data, metodo_compra, total_pedido) VALUES (?, ?, ?, ?)`,
       [id_cliente, data, metodo_compra, total_pedido]
-    )[0] as Pedido
+    ) as ResultSetHeader[]
+
+    console.log('checkpoint 0.2')
 
     detalhes.forEach(async (item) => {
+      const produto = await findById(item.id_produto.toString())
+
+      if (!produto) {
+        throw new Error('Produto não encontrado')
+      }
+
+      console.log('checkpoint 1')
+      const haveStock = produto.quantidade_estoque - item.quantidade_produto > 0
+
+      if (!haveStock) {
+        throw new Error('Produto sem estoque suficiente')
+      }
 
       await database.promise().query(
         `INSERT INTO Detalhes (
           id_pedido, 
           id_produto, 
           quantidade_produto, 
-          preco_unitario, 
-          subtotal, 
-          id_pedido, 
-          id_produto
+          subtotal
           )
-          VALUES (?, ?, ?, ?, ?, ?, ?)`,
+          VALUES (?, ?, ?, ?)`,
         [
-          pedido.id,
+          pedido.insertId,
           item.id_produto,
           item.quantidade_produto,
-          item.preco_unitario,
-          (item.quantidade_produto * item.preco_unitario)
+          (item.quantidade_produto * produto.preco)
         ]
+      )
+
+      console.log('checkpoint 2')
+
+      await database.promise().query(
+        `UPDATE Produto SET quantidade_estoque = quantidade_estoque - ? WHERE id = ?`,
+        [item.quantidade_produto, item.id_produto]
       )
     })
 
+    console.log('checkpoint 3')
+
     await database.promise().query(
       `INSERT INTO Status (
-        id_pedido
+        id_pedido,
         descricao, 
         data_atualizacao, 
-        observacoes, 
+        observacoes
         )
         VALUES (?, ?, ?, ?)`,
-      [pedido.id, descricao, data, observacoes]
+      [pedido.insertId, descricao, data, observacoes]
     )
+    console.log('checkpoint 4')
 
   } catch (error) {
     reply.status(409).send({ message: error.message })
@@ -79,5 +107,5 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     throw error
   }
 
-  return reply.status(201).send({ message: 'Cliente criado com sucesso' })
+  return reply.status(201).send({ message: 'Pedido realizado com sucesso' })
 }

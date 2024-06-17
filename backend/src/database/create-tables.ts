@@ -95,7 +95,6 @@ export async function createTables() {
     CREATE TABLE IF NOT EXISTS Detalhes (
       id INT PRIMARY KEY AUTO_INCREMENT,
       quantidade_produto INT,
-      preco_unitario FLOAT,
       subtotal FLOAT,
       id_pedido INT,
       id_produto INT,
