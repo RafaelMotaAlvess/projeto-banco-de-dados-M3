@@ -15,16 +15,6 @@ export async function remove(request: FastifyRequest, reply: FastifyReply) {
     }
 
     await database.promise().query(
-      `DELETE FROM ContatoFornecedor WHERE id_fornecedor = ?`,
-      [id]
-    );
-
-    await database.promise().query(
-      `DELETE FROM EnderecoFornecedor WHERE id_fornecedor = ?`,
-      [id]
-    );
-
-    await database.promise().query(
       `DELETE FROM Fornecedor WHERE id = ?`,
       [id]
     )

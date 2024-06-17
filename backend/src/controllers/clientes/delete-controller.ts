@@ -15,16 +15,6 @@ export async function remove(request: FastifyRequest, reply: FastifyReply) {
     }
 
     await database.promise().query(
-      `DELETE FROM ContatoCliente WHERE id_cliente = ?`,
-      [id]
-    );
-
-    await database.promise().query(
-      `DELETE FROM EnderecoCliente WHERE id_cliente = ?`,
-      [id]
-    );
-
-    await database.promise().query(
       `DELETE FROM Cliente WHERE id = ?`,
       [id]
     )
